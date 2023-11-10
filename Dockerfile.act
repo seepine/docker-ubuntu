@@ -1,0 +1,9 @@
+FROM ghcr.io/catthehacker/ubuntu:act-22.04
+
+ENV RUNNER_TOOL_CACHE="/toolcache" \
+  RUN_TOOL_CACHE="/toolcache"
+
+RUN corepack enable \
+  && corepack enable npm \
+  && corepack prepare pnpm@latest --activate \
+  && corepack prepare yarn@stable --activate
