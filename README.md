@@ -1,5 +1,9 @@
 # Ubuntu Images
 
+- support docker
+- support pnpm
+- support yarn
+
 ## Use in Actions
 
 ```yml
