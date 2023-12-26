@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/devcontainers/base:jammy
+USER vscode
+SHELL ["/bin/bash", "-c"]
+# install nvm and node 20.10
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
+  source $HOME/.nvm/nvm.sh && nvm install 20.10 && corepack enable
+# install gnm and go 1.21
+RUN curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash && \
+  echo 'export GOPATH="${HOME}/.gopath"' >> ${HOME}/.bashrc && \
+  echo 'export PATH="${GOPATH}/bin:$PATH"' >> ${HOME}/.bashrc && \
+  source "$HOME/.g/env" && g install 1.21 && \
+  export GOPATH="${HOME}/.gopath" && go install github.com/cosmtrek/air@latest

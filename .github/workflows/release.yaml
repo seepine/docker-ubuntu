@@ -26,7 +26,7 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Build and push base
+      - name: Build and push act
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -38,3 +38,15 @@ jobs:
           push: true
           tags: |
             ${{ env.DOCKER_USERNAME }}/ubuntu:act
+
+      - name: Build and push dev
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile.dev
+          platforms: |
+            linux/arm64
+            linux/amd64
+          push: true
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/ubuntu:dev
