@@ -9,4 +9,4 @@ RUN curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | ba
   echo 'export GOPATH="${HOME}/.gopath"' >> ${HOME}/.bashrc && \
   echo 'export PATH="${GOPATH}/bin:$PATH"' >> ${HOME}/.bashrc && \
   source "$HOME/.g/env" && g install 1.21 && \
-  export GOPATH="${HOME}/.gopath" && go install github.com/cosmtrek/air@latest
+  export GOPATH="${HOME}/.gopath" && go install github.com/cosmtrek/air@latest && go install golang.org/x/tools/gopls@latest
