@@ -1,4 +1,22 @@
-FROM ghcr.io/catthehacker/ubuntu:act-22.04
+ARG BASE_IMAGE_TAG
+
+FROM ghcr.io/catthehacker/ubuntu:${BASE_IMAGE_TAG}
+
+ARG IMAGE_CREATED
+ARG IMAGE_VERSION
+ARG IMAGE_REVISION
+
+LABEL org.opencontainers.image.created="${IMAGE_CREATED}" \
+      org.opencontainers.image.authors="Seepine" \
+      org.opencontainers.image.url="https://github.com/seepine/docker-ubuntu" \
+      org.opencontainers.image.documentation="https://github.com/seepine/docker-ubuntu/src/branch/main/README.md" \
+      org.opencontainers.image.source="https://github.com/seepine/docker-ubuntu" \
+      org.opencontainers.image.version="${IMAGE_VERSION}" \
+      org.opencontainers.image.revision="${IMAGE_REVISION}" \
+      org.opencontainers.image.vendor="Seepine" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.title="Gitea Actions runner images" \
+      org.opencontainers.image.description="docker images used by act_runner to run workflows."
 
 ENV RUNNER_TOOL_CACHE="/toolcache" \
   RUN_TOOL_CACHE="/toolcache"
@@ -7,4 +25,9 @@ RUN corepack enable \
   && corepack enable npm \
   && corepack prepare npm@latest --activate \
   && corepack prepare pnpm@latest --activate \
+  && corepack prepare pnpm@9.6.0 \
+  && corepack prepare pnpm@9.1.3 \
+  && corepack prepare pnpm@8.15.9 \
   && corepack prepare yarn@stable --activate
+
+RUN npx miniprogram-ci@2.0.8 upload --version

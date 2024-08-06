@@ -3,7 +3,8 @@ USER vscode
 SHELL ["/bin/bash", "-c"]
 # install nvm and node 20.10
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
-  source $HOME/.nvm/nvm.sh && nvm install 20.10 && corepack enable
+  source $HOME/.nvm/nvm.sh && nvm install 20.10 && corepack enable && corepack enable npm \
+  && corepack prepare pnpm@9.6.0 --activate
 # install gnm and go 1.21
 RUN curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash && \
   echo 'export GOPATH="${HOME}/.gopath"' >> ${HOME}/.bashrc && \
