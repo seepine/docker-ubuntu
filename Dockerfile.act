@@ -23,11 +23,7 @@ ENV RUNNER_TOOL_CACHE="/toolcache" \
 
 RUN corepack enable \
   && corepack enable npm \
-  && corepack prepare npm@latest --activate \
-  && corepack prepare pnpm@latest --activate \
-  && corepack prepare pnpm@9.6.0 \
-  && corepack prepare pnpm@9.1.3 \
-  && corepack prepare pnpm@8.15.9 \
-  && corepack prepare yarn@stable --activate
+  && corepack prepare pnpm@9.7.0 --activate \
+  && corepack prepare pnpm@8.15.9
 
 RUN npx miniprogram-ci@2.0.8 upload --version
