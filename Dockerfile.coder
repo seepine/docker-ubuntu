@@ -18,6 +18,7 @@ RUN useradd --groups sudo --no-create-home --shell /bin/bash ${USER} \
 USER ${USER}
 WORKDIR /home/${USER}
 
+SHELL ["/bin/bash", "-c"]
 # install nvm and node 22.14
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
     source $HOME/.nvm/nvm.sh && nvm install 22.14 && corepack enable && corepack enable npm \
