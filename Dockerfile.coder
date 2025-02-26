@@ -1,5 +1,4 @@
 FROM ubuntu:24.04
-
 RUN apt-get update \
 	&& apt-get install -y \
 	curl \
@@ -8,18 +7,5 @@ RUN apt-get update \
 	sudo \
 	vim \
 	wget \
-    zsh \
+  zsh \
 	&& rm -rf /var/lib/apt/lists/*
-
-ARG USER=coder
-RUN useradd --groups sudo --no-create-home --shell /bin/bash ${USER} \
-	&& echo "${USER} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/${USER} \
-	&& chmod 0440 /etc/sudoers.d/${USER}
-USER ${USER}
-WORKDIR /home/${USER}
-
-SHELL ["/bin/bash", "-c"]
-# install nvm and node 22.14
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
-    source $HOME/.nvm/nvm.sh && nvm install 22.14 && corepack enable && corepack enable npm \
-    && corepack prepare pnpm@9.15.4 --activate
