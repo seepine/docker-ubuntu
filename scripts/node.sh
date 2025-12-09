@@ -41,6 +41,7 @@ for V in "${versions[@]}"; do
   printf "\n\t🐋 Installed NODE 🐋\t\n"
   "$NODEPATH/bin/node" -v
 done
+nvm install 22
 nvm use 22
 
 # npm timeout under qemu with defaults
