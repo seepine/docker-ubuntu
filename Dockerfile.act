@@ -18,12 +18,5 @@ LABEL org.opencontainers.image.created="${IMAGE_CREATED}" \
       org.opencontainers.image.title="Gitea Actions runner images" \
       org.opencontainers.image.description="docker images used by act_runner to run workflows."
 
-ENV RUNNER_TOOL_CACHE="/toolcache" \
-  RUN_TOOL_CACHE="/toolcache"
-
-RUN corepack enable \
-  && corepack enable npm \
-  && corepack prepare pnpm@9.7.0 --activate \
-  && corepack prepare pnpm@8.15.9
-
-RUN npx miniprogram-ci@2.0.8 upload --version
+COPY ./scripts /imagegeneration/installers
+RUN bash /imagegeneration/installers/node.sh

@@ -1,13 +1,13 @@
 FROM mcr.microsoft.com/devcontainers/base:jammy
 USER vscode
 SHELL ["/bin/bash", "-c"]
-# install nvm and node 20.10
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
-  source $HOME/.nvm/nvm.sh && nvm install 20.10 && corepack enable && corepack enable npm \
-  && corepack prepare pnpm@9.6.0 --activate
-# install gnm and go 1.21
+# install nvm and node 22
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+  source $HOME/.nvm/nvm.sh && nvm install 22 && corepack enable && corepack enable npm
+# install gnm and go 1.24
 RUN curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash && \
   echo 'export GOPATH="${HOME}/.gopath"' >> ${HOME}/.bashrc && \
   echo 'export PATH="${GOPATH}/bin:$PATH"' >> ${HOME}/.bashrc && \
-  source "$HOME/.g/env" && g install 1.21 && \
-  export GOPATH="${HOME}/.gopath" && go install github.com/air-verse/air@latest && go install golang.org/x/tools/gopls@latest
+  source "$HOME/.g/env" && g install 1.24 && \
+  export GOPATH="${HOME}/.gopath" && go install github.com/air-verse/air@latest && \
+  go install golang.org/x/tools/gopls@latest

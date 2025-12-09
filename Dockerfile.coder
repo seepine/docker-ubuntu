@@ -1,11 +1,12 @@
-FROM ubuntu:24.04
-RUN apt-get update \
-	&& apt-get install -y \
-	curl \
-	git \
-	golang \
-	sudo \
-	vim \
-	wget \
-  zsh \
-	&& rm -rf /var/lib/apt/lists/*
+FROM codercom/enterprise-base:ubuntu
+SHELL ["/bin/bash", "-c"]
+# install nvm and node 22
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+  source $HOME/.nvm/nvm.sh && nvm install 22 && corepack enable && corepack enable npm
+# install gnm and go 1.24
+RUN curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash && \
+  echo 'export GOPATH="${HOME}/.gopath"' >> ${HOME}/.bashrc && \
+  echo 'export PATH="${GOPATH}/bin:$PATH"' >> ${HOME}/.bashrc && \
+  source "$HOME/.g/env" && g install 1.24 && \
+  export GOPATH="${HOME}/.gopath" && go install github.com/air-verse/air@latest && \
+  go install golang.org/x/tools/gopls@latest

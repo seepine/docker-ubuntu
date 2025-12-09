@@ -1,0 +1,84 @@
+name: Release Act Docker Images
+
+on:
+  push:
+    paths:
+      - '**/act.yml'
+      - 'Dockerfile.act'
+
+env:
+  DOCKER_USERNAME: seepine
+
+jobs:
+  build-act:
+    runs-on: ubuntu-latest
+    container:
+      image: gitea/runner-images:ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v3
+        with:
+          buildkitd-flags: --debug
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      - name: Get Meta
+        id: meta
+        run: |
+          echo IMAGE_CREATED=$(date -u +'%Y-%m-%dT%H:%M:%SZ') | tee -a $GITHUB_OUTPUT
+          echo IMAGE_VERSION=$(date -u +'v%y.%m.%d') | tee -a $GITHUB_OUTPUT
+          echo IMAGE_REVISION=$(git rev-parse HEAD) | tee -a $GITHUB_OUTPUT
+
+      - name: Build and push default 24.04
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.act
+          platforms: |
+            linux/amd64
+            linux/arm64
+          pull: true
+          push: true
+          no-cache: true
+          build-args: |
+            BASE_IMAGE_TAG=act-24.04
+            IMAGE_VERSION=${{ steps.meta.outputs.IMAGE_VERSION }}
+            IMAGE_CREATED=${{ steps.meta.outputs.IMAGE_CREATED }}
+            IMAGE_REVISION=${{ steps.meta.outputs.IMAGE_REVISION }}
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/ubuntu:act-24.04
+            ${{ env.DOCKER_USERNAME }}/ubuntu:act-24.04-${{ steps.meta.outputs.IMAGE_VERSION }}
+            ${{ env.DOCKER_USERNAME }}/ubuntu:act-latest
+            ${{ env.DOCKER_USERNAME }}/ubuntu:act
+
+      - name: Build and push default 22.04
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.act
+          platforms: |
+            linux/amd64
+            linux/arm64
+          pull: true
+          push: true
+          no-cache: true
+          build-args: |
+            BASE_IMAGE_TAG=act-22.04
+            IMAGE_VERSION=${{ steps.meta.outputs.IMAGE_VERSION }}
+            IMAGE_CREATED=${{ steps.meta.outputs.IMAGE_CREATED }}
+            IMAGE_REVISION=${{ steps.meta.outputs.IMAGE_REVISION }}
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/ubuntu:act-22.04
+            ${{ env.DOCKER_USERNAME }}/ubuntu:act-22.04-${{ steps.meta.outputs.IMAGE_VERSION }}
