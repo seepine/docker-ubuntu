@@ -5,6 +5,7 @@ on:
     paths:
       - '**/act.yml'
       - 'Dockerfile.act'
+      - 'scripts/node.sh'
 
 env:
   DOCKER_USERNAME: seepine
